@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- Template for an individual thread page. -->
+<html>
+<head>
+
+</head>
+
+<body>
+<h1>RyChat</h1>
+{% if thread_topic %}
+      <h2>{{ thread_topic.title }}</h2>
+      <h3>{{ thread_topic.author }} says: </h3>
+      <p> {{ thread_topic.text }} </p>
+      <ul>
+      {% for reply in thread_replies %}
+            <li>{{reply.author}} says:
+                  <p>{reply.text}</p>
+            </li>
+      {% endfor %}
+      </ul>
+{% else %}
+      <p>
+      This thread does not exist. I do not know how you got to this page.
+      </p>
+{% endif %}
+</body>
+
+</html>

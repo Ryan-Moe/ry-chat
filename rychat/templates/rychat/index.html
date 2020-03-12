@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!-- Template for the main topic list page. -->
+
+<html>
+<head>
+
+</head>
+
+<body>
+<h1>Welcome to RyChat</h1>
+{% if thread_list %}
+      <ul>
+      {% for thread in thread_list %}
+            <li><a href="{% url 'rychat:topic' thread.id %}">{{thread.title}}</a></li>
+      {% endfor %}
+      </ul>
+{% else %}
+      <p>No threads available right now. Check back later.</p>
+{% endif %}
+</body>
+
+</html>
