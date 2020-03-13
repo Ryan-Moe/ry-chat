@@ -8,9 +8,9 @@
 
 <body>
 <h1>Welcome to RyChat</h1>
-{% if thread_list %}
+{% if thread_index %}
       <ul>
-      {% for thread in thread_list %}
+      {% for thread in thread_index %}
             <li><a href="{% url 'rychat:topic' thread.id %}">{{thread.title}}</a></li>
       {% endfor %}
       </ul>
