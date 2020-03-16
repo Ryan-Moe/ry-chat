@@ -12,12 +12,26 @@
       <h3>{{ thread_topic.author }} says: </h3>
       <p> {{ thread_topic.text }} </p>
       <ul>
-      {% for reply in thread_replies %}
+      {% for reply in thread_topic.reply_set.all %}
             <li><h3>{{reply.author}} says:</h3>
                   <p>{{reply.text}}</p>
             </li>
       {% endfor %}
       </ul>
+
+      <div>
+      <form action="{% url "rychat:post" thread_topic.id %}" method="post">
+            {% csrf_token %}
+            <label for="authorbox">Nickname:</label><br>
+            <input type="text" name="author" id="authorbox"><br>
+
+            <label for="replybox">Reply:</label><br>
+            <textarea name="message" id="replybox" maxlength="1024"
+             placeholder="Your message here..."></textarea><br>
+
+            <input type="submit" value="Post!">
+      </form>
+      </div>
 {% else %}
       <p>
       This thread does not exist. I do not know how you got to this page.
@@ -25,19 +39,7 @@
 {% endif %}
 <a href="{% url 'rychat:index' %}">[Back to Index]</a>
 
-<div>
-<form action="{% url "rychat:post" thread_topic.id %}" method="post">
-      {% csrf_token %}
-      <label for="authorbox">Nickname:</label><br>
-      <input type="text" name="author" id="authorbox"><br>
 
-      <label for="replybox">Reply:</label><br>
-      <textarea name="message" id="replybox" maxlength="1024"
-       placeholder="Your message here..."></textarea><br>
-
-      <input type="submit" value="Post!">
-</form>
-</div>
 
 </body>
 
