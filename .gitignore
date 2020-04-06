@@ -3,3 +3,4 @@ static/*
 db.sqlite3
 manage.py
 mysite/*
+*/static/*
