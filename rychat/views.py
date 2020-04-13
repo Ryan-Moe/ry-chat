@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.urls import reverse
 from django.views import generic
+from django.contrib.auth.models import User
 from .models import Thread, Reply
 
 # View for the front page of the site.
@@ -33,10 +34,11 @@ def post_reply(request, thread_id):
     reply_text = request.POST['message']
     reply_text = reply_text[:1024]
 
-    r = Reply(thread=thread_topic,
-        text=reply_text,
-        date=timezone.now(),
-        author="RyAdmin")
-    r.save()
+    if (request.user.is_authenticated):
+        r = Reply(thread=thread_topic,
+            text=reply_text,
+            date=timezone.now(),
+            author=request.user.username)
+        r.save()
 
     return HttpResponseRedirect(reverse('rychat:topic', args=(thread_id,)))

@@ -2,7 +2,8 @@
 <!-- Template for an individual thread page. -->
 <html>
 <head>
-
+{% load static %}
+<link type="text/css" rel="stylesheet" href="{% static 'rychat/topic.css' %}">
 </head>
 
 <body>
@@ -19,12 +20,11 @@
       {% endfor %}
       </ul>
 
+      {% if user.is_authenticated %}
       <div>
       <form action="{% url "rychat:post" thread_topic.id %}" method="post">
             {% csrf_token %}
-            <label for="authorbox">Nickname:</label><br>
-            <input type="text" name="author" id="authorbox"><br>
-
+            <b>Posting as: {{ user.username }}</b><br>
             <label for="replybox">Reply:</label><br>
             <textarea name="message" id="replybox" maxlength="1024"
              placeholder="Your message here..."></textarea><br>
@@ -32,14 +32,17 @@
             <input type="submit" value="Post!">
       </form>
       </div>
+      {% else %}
+      <div>
+            <p>Login to reply to this thread.</p>
+      </div>
+      {% endif %}
 {% else %}
       <p>
       This thread does not exist. I do not know how you got to this page.
       </p>
 {% endif %}
 <a href="{% url 'rychat:index' %}">[Back to Index]</a>
-
-
 
 </body>
 
