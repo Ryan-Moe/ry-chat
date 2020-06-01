@@ -1,13 +1,7 @@
-<!DOCTYPE html>
+{% extends "base_generic.html" %}
 <!-- Template for an individual thread page. -->
-<html>
-<head>
-{% load static %}
-<link type="text/css" rel="stylesheet" href="{% static 'rychat/topic.css' %}">
-</head>
 
-<body>
-<h1>RyChat</h1>
+{% block content %}
 {% if thread_topic %}
       <h2>{{ thread_topic.title }}</h2>
       <h3>{{ thread_topic.author }} says: </h3>
@@ -44,6 +38,4 @@
 {% endif %}
 <a href="{% url 'rychat:index' %}">[Back to Index]</a>
 
-</body>
-
-</html>
+{% endblock %}
