@@ -25,6 +25,7 @@ class ThreadView(generic.DetailView):
     template_name = 'rychat/topic.html'
     context_object_name = 'thread_topic'
 
+
 # Handles new replies as posted from the thread view page.
 # Takes the author's name as well as the reply's body text,
 #creates a Reply object from it, connects it to the thread,
@@ -38,7 +39,7 @@ def post_reply(request, thread_id):
     r = Reply(thread=thread_topic,
         text=reply_text,
         date=timezone.now(),
-        author=request.user.username)
+        author=request.user.id)
     r.save()
 
     return HttpResponseRedirect(reverse('rychat:topic', args=(thread_id,)))
@@ -57,7 +58,7 @@ def post_thread(request):
     r = Thread(title=thread_title,
         text=thread_text,
         date=timezone.now(),
-        author=request.user.username)
+        author=request.user.id)
     r.save()
 
     return HttpResponseRedirect(reverse('rychat:topic', args=(r.id,)))

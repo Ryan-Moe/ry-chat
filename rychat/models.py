@@ -1,11 +1,15 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+
+#TODO: convert "author" fields to foreign key of user
 
 # Create your models here.
 class Thread(models.Model):
     title = models.CharField(max_length = 256)
     text = models.CharField(max_length = 1024)
     date = models.DateTimeField('date posted')
-    author = models.CharField(max_length = 32)
+    author = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
     def __str__(self):
         return 'Thread: %s' % self.title
@@ -14,7 +18,7 @@ class Reply(models.Model):
     thread = models.ForeignKey(Thread, on_delete = models.CASCADE)
     text = models.CharField(max_length = 1024)
     date = models.DateTimeField('date posted')
-    author = models.CharField(max_length = 32)
+    author = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
     def __str__(self):
-        return '%s @ %s: %s' % (self.author, self.date, self.text[:100])
+        return '%s @ %s: %s' % (self.authorname(), self.date, self.text[:100])
