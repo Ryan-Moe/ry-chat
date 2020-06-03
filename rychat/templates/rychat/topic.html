@@ -4,11 +4,17 @@
 {% block content %}
 {% if thread_topic %}
       <h2>{{ thread_topic.title }}</h2>
-      <h3>{{ thread_topic.author }} says: </h3>
+
+      {% if thread_topic.author %}
+      <h3>{{ thread_topic.author.username }}: </h3>
+      {% else %}
+      <h3>[deleted_user]:<h3>
+      {% endif %}
+
       <p> {{ thread_topic.text }} </p>
       <ul>
-      {% for reply in thread_topic.reply_set.all %}
-            <li><h3>{{reply.author}} says:</h3>
+            {% for reply in thread_topic.reply_set.all %}
+            <li><h3>{{ thread_topic.author.username }}:</h3>
                   <p>{{reply.text}}</p>
             </li>
       {% endfor %}
