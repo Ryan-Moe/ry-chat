@@ -5,3 +5,4 @@ manage.py
 mysite/*
 */static/*
 templates/registration/*
+*/__pycache__/*
