@@ -6,16 +6,26 @@
       <h2>{{ thread_topic.title }}</h2>
 
       {% if thread_topic.author %}
-      <h3>{{ thread_topic.author.username }}: </h3>
+            <h3>{{ thread_topic.author.username }}: </h3>
       {% else %}
-      <h3>[deleted_user]:<h3>
+            <h3>[deleted_user]:<h3>
       {% endif %}
 
       <p> {{ thread_topic.text }} </p>
-      <ul>
+      {% if user == thread_topic.author %}
+            <a class="delete_link" href="{% url 'rychat:deletethread' thread_topic.id %}">
+                  [Delete thread?]
+            </a>
+      {% endif %}
+      <ul id="reply_list">
             {% for reply in thread_topic.reply_set.all %}
             <li><h3>{{ thread_topic.author.username }}:</h3>
                   <p>{{reply.text}}</p>
+                  {% if user == thread_topic.author  %}
+                  <a class="delete_link" href="{% url 'rychat:delete' reply.id %}">
+                        [Delete reply?]
+                  </a>
+                  {% endif %}
             </li>
       {% endfor %}
       </ul>

@@ -62,3 +62,28 @@ def post_thread(request):
     r.save()
 
     return HttpResponseRedirect(reverse('rychat:topic', args=(r.id,)))
+
+# Checks whether user is the same that posted the reply
+# and if so deletes it.
+@login_required
+def delete_reply(request, reply_id):
+    theReply = get_object_or_404(Reply, pk=reply_id)
+    thread_id = theReply.thread.id
+    theUser = request.user
+
+    if theUser == theReply.author or theUser.has_perm('rychat.delete_reply'):
+        theReply.delete()
+
+    return HttpResponseRedirect(reverse('rychat:topic', args=(thread_id,)))
+
+# Checks whether user is the same that posted the thread
+# and if so deletes it.
+@login_required
+def delete_thread(request, thread_id):
+    theThread = get_object_or_404(Thread, pk=thread_id)
+    theUser = request.user
+
+    if theUser == theReply.author or theUser.has_perm('rychat.delete_thread'):
+        theReply.delete()
+
+    return HttpResponseRedirect(reverse('rychat:index'))
