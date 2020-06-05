@@ -12,7 +12,7 @@
       {% endif %}
 
       <p> {{ thread_topic.text }} </p>
-      {% if user == thread_topic.author or can_delete_threads %}
+      {% if user == thread_topic.author or perms.rychat.delete_thread %}
             <a class="delete_link" href="{% url 'rychat:deletethread' thread_topic.id %}">
                   [Delete thread?]
             </a>
@@ -26,7 +26,7 @@
                   <h3>(deleted_user):</h3>
                   {% endif %}
                   <p>{{reply.text}}</p>
-                  {% if user == reply.author or can_delete %}
+                  {% if user == reply.author or perms.rychat.delete_reply %}
                   <a class="delete_link" href="{% url 'rychat:delete' reply.id %}">
                         [Delete reply?]
                   </a>

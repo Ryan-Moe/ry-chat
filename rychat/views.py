@@ -25,12 +25,6 @@ class ThreadView(generic.DetailView):
     template_name = 'rychat/topic.html'
     context_object_name = 'thread_topic'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['can_delete'] = self.request.user.has_perm('rychat.delete_reply')
-        context['can_delete_threads'] = self.request.user.has_perm('rychat.delete_thread')
-        return context
-
 
 # Handles new replies as posted from the thread view page.
 # Takes the author's name as well as the reply's body text,
