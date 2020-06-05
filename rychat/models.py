@@ -19,4 +19,4 @@ class Reply(models.Model):
     author = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
     def __str__(self):
-        return '%s @ %s: %s' % (self.authorname(), self.date, self.text[:100])
+        return '%s @ %s: %s' % (self.author.username, self.date, self.text[:100])
