@@ -8,6 +8,7 @@ urlpatterns = [
    path('topic/<int:pk>/', views.ThreadView.as_view(), name='topic'),
    path('topic/<int:thread_id>/post/', views.post_reply, name='post'),
    path('newthread/', views.post_thread, name='newthread'),
-   path('deletethread/<int:thread_id>/', views.delete_thread, name="deletethread"),
-   path('delete/<int:reply_id>/', views.delete_reply, name="delete"),
+   path('deletethread/<int:thread_id>/', views.delete_thread, name='deletethread'),
+   path('delete/<int:reply_id>/', views.delete_reply, name='delete'),
+   path('register/', views.signup, name='register'),
 ]

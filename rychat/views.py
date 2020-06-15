@@ -1,10 +1,13 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.urls import reverse
 from django.views import generic
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from .models import Thread, Reply
 
 # View for the front page of the site.
@@ -30,7 +33,6 @@ class ThreadView(generic.DetailView):
         context['can_delete'] = self.request.user.has_perm('rychat.delete_reply')
         context['can_delete_threads'] = self.request.user.has_perm('rychat.delete_thread')
         return context
-
 
 # Handles new replies as posted from the thread view page.
 # Takes the author's name as well as the reply's body text,
@@ -93,3 +95,25 @@ def delete_thread(request, thread_id):
         theReply.delete()
 
     return HttpResponseRedirect(reverse('rychat:index'))
+
+# Renders the page for the new user registration form.
+# Upon successful registration, logs the user in and
+# redirects them back to the site.
+def signup(request):
+    next = ""
+    if request.GET:
+        next = request.GET['next']
+
+    if request.method == 'POST':
+        next = request.POST['next']
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            auth_login(request, user)
+            if next == "":
+                next = reverse('rychat:index')
+            return HttpResponseRedirect(next)
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'rychat/signup.html', {'form': form, 'next': next})
