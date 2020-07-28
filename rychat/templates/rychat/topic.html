@@ -3,6 +3,7 @@
 
 {% block content %}
 {% if thread_topic %}
+      <div id="topic-div">
       <h2>{{ thread_topic.title }}</h2>
 
       {% if thread_topic.author %}
@@ -10,14 +11,24 @@
       {% else %}
             <h3>(deleted_user):<h3>
       {% endif %}
+      <b>{{thread_topic.date}}</b>
 
       <p> {{ thread_topic.text }} </p>
+      {% if thread_topic.edited %}
+            <h6>Last Edited:{{thread_topic.edited}}</h6>
+      {% endif %}
       {% if user == thread_topic.author or can_delete_threads %}
-            <a class="delete_link" href="{% url 'rychat:deletethread' thread_topic.id %}">
+            <a class="delete-link" href="{% url 'rychat:editthread' thread_topic.id %}">
+                  [Edit?]
+            </a>
+            |
+            <a class="delete-link" href="{% url 'rychat:deletethread' thread_topic.id %}">
                   [Delete thread?]
             </a>
       {% endif %}
-      <ul id="reply_list">
+      </div>
+
+      <ul id="reply-list">
             {% for reply in thread_topic.reply_set.all %}
             <li>
                   {% if reply.author %}
@@ -25,10 +36,19 @@
                   {% else %}
                   <h3>(deleted_user):</h3>
                   {% endif %}
+
+                  <b>{{reply.date}}</b>
                   <p>{{reply.text}}</p>
+                  {% if reply.edited %}
+                        <h6>Last Edited:{{reply.edited}}</h6>
+                  {% endif %}
                   {% if user == reply.author or can_delete %}
-                  <a class="delete_link" href="{% url 'rychat:delete' reply.id %}">
-                        [Delete reply?]
+                  <a class="delete-link" href="{% url 'rychat:edit' reply.id %}">
+                        [Edit?]
+                  </a>
+                  |
+                  <a class="delete-link" href="{% url 'rychat:delete' reply.id %}">
+                        [Delete?]
                   </a>
                   {% endif %}
             </li>
@@ -42,7 +62,7 @@
             <b>Posting as: {{ user.username }}</b><br>
             <label for="replybox">Reply:</label><br>
             <textarea name="message" id="replybox" maxlength="1024"
-             placeholder="Your message here..."></textarea><br>
+             placeholder="Your message here..." wrap="hard"></textarea><br>
 
             <input type="submit" value="Post!">
       </form>

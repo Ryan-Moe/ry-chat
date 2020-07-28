@@ -7,6 +7,7 @@ class Thread(models.Model):
     title = models.CharField(max_length = 256)
     text = models.CharField(max_length = 1024)
     date = models.DateTimeField('date posted')
+    edited = models.DateTimeField('last edited', null=True)
     author = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
     def __str__(self):
@@ -16,6 +17,7 @@ class Reply(models.Model):
     thread = models.ForeignKey(Thread, on_delete = models.CASCADE)
     text = models.CharField(max_length = 1024)
     date = models.DateTimeField('date posted')
+    edited = models.DateTimeField('last edited', null=True)
     author = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
 
     def __str__(self):

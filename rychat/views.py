@@ -96,6 +96,45 @@ def delete_thread(request, thread_id):
 
     return HttpResponseRedirect(reverse('rychat:index'))
 
+# A page with a text box for editing post text,
+# and handling of the resulting POST action.
+@login_required
+def edit_reply(request, reply_id):
+    theReply = get_object_or_404(Reply, pk=reply_id)
+    thread_id = theReply.thread.id
+    theUser = request.user
+
+    if theUser == theReply.author:
+        if request.method == 'POST':
+            reply_text = request.POST['message']
+            theReply.text = reply_text[:1024]
+            theReply.edited = timezone.now()
+            theReply.save()
+        else:
+            return render(request, 'rychat/edit.html', {'reply': theReply, 'thread_id': thread_id})
+
+    return HttpResponseRedirect(reverse('rychat:topic', args=(thread_id,)))
+
+# A page with a text box for editing thread text and title,
+# and handling of the resulting POST action.
+@login_required
+def edit_thread(request, thread_id):
+    theThread = get_object_or_404(Thread, pk=thread_id)
+    theUser = request.user
+
+    if theUser == theThread.author:
+        if request.method == 'POST':
+            thread_title = request.POST['title']
+            theThread.title = thread_title[:256]
+            thread_text = request.POST['message']
+            theThread.text = thread_text[:1024]
+            theThread.edited = timezone.now()
+            theThread.save()
+        else:
+            return render(request, 'rychat/edit.html', {'thread': theThread, 'thread_id': theThread.id})
+
+    return HttpResponseRedirect(reverse('rychat:topic', args=(thread_id,)))
+
 # Renders the page for the new user registration form.
 # Upon successful registration, logs the user in and
 # redirects them back to the site.
