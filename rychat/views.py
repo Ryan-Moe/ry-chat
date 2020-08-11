@@ -143,6 +143,9 @@ def signup(request):
     if request.GET:
         next = request.GET['next']
 
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('rychat:index'))
+
     if request.method == 'POST':
         next = request.POST['next']
         form = UserCreationForm(request.POST)

@@ -1,8 +1,14 @@
 {% extends "base_generic.html" %}
 
+{% block pagestyle %}
+{% load static %}
+<link type="text/css" rel="stylesheet" href="{% static 'rychat/css/login.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<h2>New User:</h2>
+<div class="panel">
+<h2>Sign Up:</h2>
 
 {% if form.errors %}
       {% for error in form.errors.values %}
@@ -26,8 +32,9 @@
       <td>{{ form.password2 }}</td>
      </tr>
    </table>
-   <input type="submit" value="Sign Up!" />
+   <input type="submit" value="Sign Up!" class="buttons"/>
    <input type="hidden" name="next" value="{{ next }}" />
  </form>
+ </div>
 
 {% endblock %}

@@ -4,27 +4,43 @@
 <head>
 {% load static %}
 <title>RyChat</title>
-<link type="text/css" rel="stylesheet" href="{% static 'rychat/style.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'rychat/css/style.css' %}">
+{% block pagestyle %}<!-- css for individual pages goes here -->{% endblock %}
 </head>
 
 <body>
 
 {% block navbar %}
 <nav class="navbar">
-<div class="title">
+      <div class="site-title">
             <a id="logo" href="{% url 'rychat:index' %}"><h1>RyChat</h1> </a>
+      </div>
 
+      <div></div>
 
-      <div class="nav-login">
+      <ul class="nav-login">
       {% if user.is_authenticated %}
-            Welcome, {{ user.username }}.
-            <a href="{% url 'logout' %}?next={{request.path}}">Logout?</a>
+            <li id="nav-greeting">Welcome, {{ user.username }}.</li>
+            <a href="{% url 'logout' %}?next={{request.path}}">
+                  <li class="nav-option">
+                        Logout?
+                  </li>
+            </a>
 
       {% else %}
-            <a href="{% url 'login' %}?next={{request.path}}">Login Here</a><br>
-            <a href="{% url 'rychat:register' %}?next={{request.path}}">New User?</a>
+            <a href="{% url 'login' %}?next={{request.path}}">
+                  <li class="nav-option">
+                        Login Here
+                  </li>
+            </a>
+            <br>
+            <a href="{% url 'rychat:register' %}?next={{request.path}}">
+                  <li class="nav-option">
+                        New User?
+                  </li>
+            </a>
       {% endif %}
-      </div>
+      </ul>
 </nav>
 
 

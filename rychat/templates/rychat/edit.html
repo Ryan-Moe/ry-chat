@@ -1,41 +1,41 @@
 {% extends 'base_generic.html' %}
 
+
 {% block content %}
+
+<div class="panel" style="margin-top:1em;">
+<b>Reply:</b><br>
+Posting as: {{ user.username }}
+
 {%if reply %}
 
-<div>
+
 <form action="{% url "rychat:edit" reply.id %}" method="post">
       {% csrf_token %}
-      <b>Posting as: {{ user.username }}</b><br>
-      <label for="replybox">Reply:</label><br>
+      <label for="replybox"></label><br>
       <textarea name="message" id="replybox" maxlength="1024"
       placeholder="Your message here..." wrap="hard">{{reply.text}}</textarea><br>
 
-      <input type="submit" value="Edit!">
-</form>
-</div>
-
 {% elif thread %}
 
-<div>
 <form action="{% url "rychat:editthread" thread.id %}" method="post">
       {% csrf_token %}
-      <b>Posting as: {{ user.username }}</b><br>
-      <label for="titlebox">Title:</label><br>
       <input name="title" id="titlebox" type="text" size="65" value="{{thread.title}}"><br>
       <label for="replybox">Reply:</label><br>
       <textarea name="message" id="replybox" maxlength="1024"
       placeholder="Your message here..." wrap="hard">{{thread.text}}</textarea><br>
 
-      <input type="submit" value="Edit!">
-</form>
-</div>
-
 {% endif %}
 
-<a href="{%url 'rychat:topic' thread_id %}">
-      [Cancel]
-</a>
+      <input type="submit" value="Edit" class="buttons">
+      <a class="buttons negative-buttons" href="{%url 'rychat:topic' thread_id %}">
+            Cancel
+      </a>
+</form>
+
+
+
+</div>
 
 
 {% endblock %}

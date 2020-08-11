@@ -1,82 +1,114 @@
 {% extends "base_generic.html" %}
 <!-- Template for an individual thread page. -->
 
+{% block pagestyle %}
+{% load static %}
+<link type="text/css" rel="stylesheet" href="{% static 'rychat/css/topic.css' %}">
+{% endblock %}
+
 {% block content %}
 {% if thread_topic %}
-      <div id="topic-div">
-      <h2>{{ thread_topic.title }}</h2>
+<div id="wrapper">
+<main id=topic-main>
+      <div id="topic-div" class="panel">
+            <header><h2 id="title">{{ thread_topic.title }}</h2></header>
 
-      {% if thread_topic.author %}
-            <h3>{{ thread_topic.author.username }}: </h3>
-      {% else %}
-            <h3>(deleted_user):<h3>
-      {% endif %}
-      <b>{{thread_topic.date}}</b>
+            <div id="topic-post">
+            <div class="user-div">
+            {% if thread_topic.author %}
+                  <span>{{ thread_topic.author.username }}: </span>
+            {% else %}
+                  <span>(deleted_user):</span>
+            {% endif %}
+            </div>
 
-      <p> {{ thread_topic.text }} </p>
-      {% if thread_topic.edited %}
-            <h6>Last Edited:{{thread_topic.edited}}</h6>
-      {% endif %}
-      {% if user == thread_topic.author or can_delete_threads %}
-            <a class="delete-link" href="{% url 'rychat:editthread' thread_topic.id %}">
-                  [Edit?]
-            </a>
-            |
-            <a class="delete-link" href="{% url 'rychat:deletethread' thread_topic.id %}">
-                  [Delete thread?]
-            </a>
-      {% endif %}
+            <div class="msg-div">
+            <p class="msg-text"> {{ thread_topic.text }} </p>
+            <div class="dates">
+            <span class="date">{{thread_topic.date}}</span><br>
+            {% if thread_topic.edited %}
+                  <span class="date">Last Edited:{{thread_topic.edited}}</span>
+            {% endif %}
+            </div>
+
+            {% if user == thread_topic.author or can_delete_threads %}
+            <div class="delete-link-section">
+                  <a class="delete-link" href="{% url 'rychat:editthread' thread_topic.id %}">
+                        Edit?
+                  </a>
+                  <a class="delete-link" href="{% url 'rychat:deletethread' thread_topic.id %}">
+                        Delete thread?
+                  </a>
+            </div>
+            {% endif %}
+
+            </div>
+            </div>
       </div>
 
       <ul id="reply-list">
             {% for reply in thread_topic.reply_set.all %}
-            <li>
+            <li class="panel">
+                  <div class="user-div">
                   {% if reply.author %}
-                  <h3>{{ reply.author.username }}:</h3>
+                        <span>{{ reply.author.username }}:</span>
                   {% else %}
-                  <h3>(deleted_user):</h3>
+                        <span>(deleted_user):</span>
                   {% endif %}
+                  </div>
 
-                  <b>{{reply.date}}</b>
-                  <p>{{reply.text}}</p>
-                  {% if reply.edited %}
-                        <h6>Last Edited:{{reply.edited}}</h6>
-                  {% endif %}
-                  {% if user == reply.author or can_delete %}
-                  <a class="delete-link" href="{% url 'rychat:edit' reply.id %}">
-                        [Edit?]
-                  </a>
-                  |
-                  <a class="delete-link" href="{% url 'rychat:delete' reply.id %}">
-                        [Delete?]
-                  </a>
-                  {% endif %}
+                  <div class="msg-div">
+                  <p class="msg-text">{{reply.text}}</p>
+
+                  <div class="dates">
+                        <span class="date">Posted: {{reply.date}}</span><br>
+                        {% if reply.edited %}
+                              <span class="date">Last Edited: {{reply.edited}}</span>
+                        {% endif %}
+                  </div>
+                  <div class="delete-link-section">
+                        {% if user == reply.author or can_delete %}
+                        <a class="delete-link" href="{% url 'rychat:edit' reply.id %}">
+                              Edit?
+                        </a>
+                        <a class="delete-link" href="{% url 'rychat:delete' reply.id %}">
+                              Delete?
+                        </a>
+                        {% endif %}
+                  </div>
+                  </div>
             </li>
       {% endfor %}
       </ul>
 
+      <div class="panel">
       {% if user.is_authenticated %}
-      <div>
       <form action="{% url "rychat:post" thread_topic.id %}" method="post">
             {% csrf_token %}
-            <b>Posting as: {{ user.username }}</b><br>
-            <label for="replybox">Reply:</label><br>
+            <b>Reply:</b><br>
+            <label for="replybox">Posting as: {{ user.username }}</label><br>
             <textarea name="message" id="replybox" maxlength="1024"
              placeholder="Your message here..." wrap="hard"></textarea><br>
 
-            <input type="submit" value="Post!">
+            <input class="buttons" type="submit" value="Post!">
       </form>
-      </div>
       {% else %}
-      <div>
             <p>Login to reply to this thread.</p>
-      </div>
       {% endif %}
+      </div>
+
 {% else %}
-      <p>
+      <p class="panel">
       This thread does not exist. I do not know how you got to this page.
       </p>
 {% endif %}
-<a href="{% url 'rychat:index' %}">[Back to Index]</a>
+</main>
+
+<footer id="page-end">
+      <a href="#title"> [Back to Top]</a> <br>
+      <a href="{% url 'rychat:index' %}">[Return to Index]</a>
+</footer>
+
+</div>
 
 {% endblock %}

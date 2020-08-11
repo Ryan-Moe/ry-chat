@@ -1,12 +1,28 @@
 {% extends "base_generic.html" %}
 <!-- Template for the main topic list page. -->
 
+{% block pagestyle %}
+{% load static %}
+<link type="text/css" rel="stylesheet" href="{% static 'rychat/css/index.css' %}">
+{% endblock %}
+
 {% block content %}
+
 
 {% if thread_index %}
       <ul>
       {% for thread in thread_index %}
-            <li><a href="{% url 'rychat:topic' thread.id %}">{{thread.title}}</a></li>
+            <a href="{% url 'rychat:topic' thread.id %}">
+                  <li class="panel thread-list-item">
+                        <div class="thread-container">
+                        <div class="thread-title">{{thread.title}}</div><br>
+                        <div class="thread-author">Posted By {{thread.author}}</div>
+                        </div>
+                        <div class="time-container">
+                              <span>{{thread.date}}</span>
+                        </div>
+                  </li>
+            </a>
       {% endfor %}
       </ul>
 {% else %}
@@ -15,22 +31,25 @@
 
 
 {% if user.is_authenticated %}
-<div id="New_Thread_Form">
+<div id="New_Thread_Form" class="panel"
 <form action="{% url "rychat:newthread" %}" method="post">
       {% csrf_token %}
       <b>New Thread:</b><br>
+      <div id="form-center">
+
       <label for="titlebox">Title:</label><br>
-      <input name="title" id="titlebox" type="text" size="65"><br>
+      <input name="title" id="titlebox" type="text"><br>
       <label for="replybox">Body:</label><br>
       <textarea name="message" id="replybox" maxlength="1024"
       placeholder="Your message here..." wrap="hard"></textarea><br>
 
-      <input type="submit" value="Post!">
+      <input type="submit" class="buttons" value="Post!">
+      </div>
 </form>
 </div>
 {% else %}
 <div>
-      <p>Login to start a new thread.</p>
+      <p class="panel">Log In to start a new thread.</p>
 </div>
 {% endif %}
 
