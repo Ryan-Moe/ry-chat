@@ -1,9 +1,7 @@
 env/*
-static/*
 db.sqlite3
 manage.py
 mysite/*
-*/static/*
 templates/registration/*
 __pycache__/
 *.pyc

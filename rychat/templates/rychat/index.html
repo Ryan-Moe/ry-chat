@@ -12,14 +12,21 @@
 {% if thread_index %}
       <ul>
       {% for thread in thread_index %}
-            <a href="{% url 'rychat:topic' thread.id %}">
+            <a class= "thread-link" href="{% url 'rychat:topic' thread.id %}">
                   <li class="panel thread-list-item">
                         <div class="thread-container">
-                        <div class="thread-title">{{thread.title}}</div><br>
-                        <div class="thread-author">Posted By {{thread.author}}</div>
+                              <div class="thread-title">{{thread.title}}</div><br>
+                              <div class="thread-author">
+                                    <div class="posted-by">Posted By {{thread.author}}</div>
+                                    <div class="reply-count">Replies: {{thread.reply_set.all|length}}</div>
+                              </div>
+
                         </div>
                         <div class="time-container">
-                              <span>{{thread.date}}</span>
+                              <div>Posted: {{thread.date.date}}</div>
+                              {% if thread.reply_set.last %}
+                              <div>Last Reply: {{thread.reply_set.last.date.date}}</div>
+                              {% endif %}
                         </div>
                   </li>
             </a>
@@ -31,8 +38,8 @@
 
 
 {% if user.is_authenticated %}
-<div id="New_Thread_Form" class="panel"
-<form action="{% url "rychat:newthread" %}" method="post">
+<div id="New_Thread_Form" class="panel">
+<form action="{% url 'rychat:newthread' %}" method="post">
       {% csrf_token %}
       <b>New Thread:</b><br>
       <div id="form-center">

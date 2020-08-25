@@ -5,9 +5,10 @@ from django.db import migrations
 def names_to_ID(apps, schema_editor):
     User = apps.get_model('auth', 'User')
 
-    ryadmin = User.objects.get(username='admin')
-    ryadmin.username = 'RyAdmin'
-    ryadmin.save()
+    if User.objects.get(username='admin'):
+        ryadmin = User.objects.get(username='admin')
+        ryadmin.username = 'RyAdmin'
+        ryadmin.save()
 
     Thread = apps.get_model('rychat', 'Thread')
     for thread in Thread.objects.all():
